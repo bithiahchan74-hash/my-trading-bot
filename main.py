@@ -85,7 +85,7 @@ def analyze_and_screen_stocks():
                 })
         except Exception as e:
             logging.error(f"分析 {symbol} 時發生錯誤: {e}")
-            
+        time.sleep(1)            
     return selected_stocks
 
 def run_trading_strategy():
