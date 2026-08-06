@@ -69,8 +69,12 @@ def analyze_and_screen_stocks():
             df = yf.download(ticker_symbol, period="5d", progress=False)
             
             if not df.empty:
-                # 取得最新收盤價
-                current_price_usd = float(df['Close'].iloc[-1])
+                # 取得最新收盤價（全防護轉型，避免 Series 或轉型錯誤）
+                try:
+                    close_val = df['Close'].iloc[-1]
+                    current_price_usd = float(close_val.iloc[0] if hasattr(close_val, 'iloc') else close_val)
+                except Exception:
+                    current_price_usd = 0.0
                 
                 # 安全預設風控數據（避免 Rate Limit 導致系統崩潰）
                 dividend_yield = 0.045  # 預設 4.5%
