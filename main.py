@@ -1,3 +1,6 @@
+import yfinance as yf
+from curl_cffi import requests as cffi_requests
+session = cffi_requests.Session(impersonate="chrome")
 import os
 import time
 import requests
@@ -63,7 +66,7 @@ def analyze_and_screen_stocks():
     
     for symbol in CANDIDATE_TICKERS:
         try:
-            stock = ticker_data.Ticker(symbol)
+            stock = yf.Ticker(symbol, session=session)
             info = stock.info
             
             dividend_yield = info.get('dividendYield', 0) or 0
