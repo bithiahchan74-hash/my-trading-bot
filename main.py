@@ -1,14 +1,11 @@
 import yfinance as yf
 from curl_cffi import requests as cffi_requests
-session = cffi_requests.Session(impersonate="chrome")
-import os
-import time
-import requests
-import logging
-import threading
+import os, time, requests, logging, threading
 from flask import Flask
-import yfinance as ticker_data
 
+# 偽裝 Chrome Session 與關閉快取目錄
+session = cffi_requests.Session(impersonate="chrome")
+yf.set_tz_cache_location(".cache/py-yfinance")
 # ==========================================
 # 1. 輕量 Web 伺服器 (防止 Render 服務休眠)
 # ==========================================
@@ -88,7 +85,7 @@ def analyze_and_screen_stocks():
                 })
         except Exception as e:
             logging.error(f"分析 {symbol} 時發生錯誤: {e}")
-        time.sleep(3)            
+        time.sleep(5)            
     return selected_stocks
 
 def run_trading_strategy():
